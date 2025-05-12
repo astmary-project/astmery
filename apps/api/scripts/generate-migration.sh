@@ -34,15 +34,12 @@ NEW_SCHEMA="$PRISMA_DIR/schema.prisma"
 echo "→ Pulling current D1 schema…"
 npx prisma db pull --print > "$OLD_SCHEMA"
 
-echo "→ Creating migration directory: $DIR"
-mkdir -p "$DIR"
-
 echo "→ Generating diff SQL…"
 npx prisma migrate diff \
   --from-schema-datamodel="$OLD_SCHEMA" \
   --to-schema-datamodel="$NEW_SCHEMA" \
   --script \
-  > "$MIG_FILE"
+  > "$MIG_FILE" 2>/dev/null
 
 echo "→ Cleaning up…"
 rm "$OLD_SCHEMA"
