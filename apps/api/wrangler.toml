@@ -1,0 +1,10 @@
+name = "astmery-d1-database"
+main = "src/main.ts"
+compatibility_date = "2023-5-10"
+compatibility_flags = ["nodejs_compat"]
+observability.enabled = true
+
+[[d1_databases]]
+binding = "astmeryDB"
+database_name = "astmery-d1-database"
+database_id = "ba759401-9106-4543-b501-35f6707a619a"

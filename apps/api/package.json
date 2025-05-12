@@ -1,0 +1,32 @@
+{
+	"name": "cloudflare-workers-openapi",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev",
+		"start": "wrangler dev",
+		"cf-typegen": "wrangler types",
+    	"prisma:generate": "prisma generate",
+    	"ncu": "npm-check-updates",
+    	"ncu:upgrade": "npm-check-updates -u && pnpm install",
+		"migrate": "bash scripts/generate-migration.sh"
+	},
+	"dependencies": {
+		"chanfana": "^2.8.0",
+		"hono": "^4.7.9",
+		"zod": "^3.24.4",
+        "@prisma/client": "^6.7.0"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20250510.0",
+		"@types/service-worker-mock": "^2.0.4",
+		"wrangler": "^4.14.4",
+    	"@prisma/adapter-d1": "^6.7.0",
+    	"@types/node": "22.15.17",
+    	"dotenv": "^16.5.0",
+    	"prisma": "^6.7.0",
+    	"ts-node": "^10.9.2",
+    	"typescript": "^5.8.3"
+	}
+}

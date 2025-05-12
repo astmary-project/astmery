@@ -1,0 +1,27 @@
+{
+  "name": "db",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "ncu": "npm-check-updates",
+    "ncu:upgrade": "npm-check-updates -u && pnpm install"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.7.0"
+  },
+  "devDependencies": {
+    "@prisma/adapter-d1": "^6.7.0",
+    "@types/node": "22.15.17",
+    "dotenv": "^16.5.0",
+    "prisma": "^6.7.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.14.4"
+  },
+  "prisma": {
+    "seed": "ts-node --transpile-only prisma/seed.ts"
+  }
+}
