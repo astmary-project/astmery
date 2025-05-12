@@ -209,7 +209,7 @@ model RSkillHaveElement {
   @@unique([skillId, elementId])
 }
 
-model SkillTerget {
+model SkillTarget {
   id          String  @id @default(uuid())
   name        String
   description String?
@@ -272,6 +272,9 @@ model RSkillEvolution {
   baseSkillId    String
   evolvedSkillId String
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   base    Skill @relation("base", fields: [baseSkillId], references: [id], onDelete: Cascade)
   evolved Skill @relation("evolved", fields: [evolvedSkillId], references: [id], onDelete: Cascade)
 
@@ -282,6 +285,9 @@ model Bookmark {
   id          String @id @default(uuid())
   characterId String
   skillId     String
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
   skill     Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
@@ -313,7 +319,7 @@ model Skill {
   acqRoll         AcqRoll?            @relation(fields: [acqRollId], references: [id])
   timing          MSkillTiming?       @relation(fields: [timingId], references: [id])
   elements        RSkillHaveElement[]
-  target          SkillTerget?        @relation(fields: [targetId], references: [id])
+  target          SkillTarget?        @relation(fields: [targetId], references: [id])
   range           SkillRange?         @relation(fields: [rangeId], references: [id])
   shape           SkillShape?         @relation(fields: [shapeId], references: [id])
   skillCosts      RSkillCost[]        @relation("skill_cost")
