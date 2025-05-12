@@ -14,94 +14,94 @@ datasource db {
 }
 
 model UserRoll {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   description String?
 
-  users       User[]
+  users User[]
 }
 
 model User {
-  id         String     @id @default(uuid())
-  name       String
-  email      String     @unique
-  password   String
-  role       Int
-  createAt   DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  eventLogs  EventLog[]
-  userRoll   UserRoll   @relation(fields: [role], references: [id], onDelete: Cascade)
+  eventLogs EventLog[]
+  userRoll  UserRoll   @relation(fields: [role], references: [id], onDelete: Cascade)
 }
 
 model UnitTag {
-  id          String     @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   tagTypeId   Int?
   description String?
 
-  units       UnitTaged[]
-  tagType     UnitType?  @relation(fields: [tagTypeId], references: [id])
+  units   UnitTagged[]
+  tagType UnitType?    @relation(fields: [tagTypeId], references: [id])
 }
 
-model UnitTaged {
-  id         String   @id @default(uuid())
-  unitId     String
-  tagId      String
+model UnitTagged {
+  id     String @id @default(uuid())
+  unitId String
+  tagId  String
 
-  createAt   DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  unit       Unit     @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  tag        UnitTag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  unit Unit    @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  tag  UnitTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@unique([unitId, tagId])
 }
 
 model UnitType {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   description String?
 
-  units       Unit[]
-  unitTags    UnitTag[]
+  units    Unit[]
+  unitTags UnitTag[]
 }
 
 model Unit {
-  id             String         @id @default(uuid())
-  typeId         Int
-  name           String
-  parentId       String?
-  flavorText     String?
+  id         String  @id @default(uuid())
+  typeId     Int
+  name       String
+  parentId   String?
+  flavorText String?
 
-  createAt       DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  unitTags       UnitTaged[]
-  parent         Unit?          @relation("Unit", fields: [parentId], references: [id], onDelete: Cascade)
-  members        Unit[]         @relation("Unit")
+  unitTags       UnitTagged[]
+  parent         Unit?           @relation("Unit", fields: [parentId], references: [id], onDelete: Cascade)
+  members        Unit[]          @relation("Unit")
   character      Character?
   getItemEvents  GetItemEvent[]
   getMoneyEvents GetMoneyEvent[]
-  unitType       UnitType       @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  unitType       UnitType        @relation(fields: [typeId], references: [id], onDelete: Cascade)
 }
 
 model Character {
-  id             String           @id @default(uuid())
-  unitId         String           @unique
+  id     String @id @default(uuid())
+  unitId String @unique
 
-  initGrade      Int
-  initScience    Int
-  initMagic      Int
-  initBattle     Int
-  initPower      Int
-  initMental     Int
-  initPhysical   Int
+  initGrade    Int
+  initScience  Int
+  initMagic    Int
+  initBattle   Int
+  initPower    Int
+  initMental   Int
+  initPhysical Int
 
-  createAt       DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  unit           Unit             @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  unit           Unit            @relation(fields: [unitId], references: [id], onDelete: Cascade)
   bookmarks      Bookmark[]
   skillAcqEvents SkillAcqEvent[]
   growthEvents   GrowthEvent[]
@@ -110,22 +110,22 @@ model Character {
 }
 
 model MItemCategory {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   description String?
 
-  items       Item[]
+  items Item[]
 }
 
 model Item {
-  id            String         @id @default(uuid())
-  name          String
-  categoryId    Int
-  price         Int
-  description   String?
+  id          String  @id @default(uuid())
+  name        String
+  categoryId  Int
+  price       Int
+  description String?
 
-  createAt      DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   category      MItemCategory  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   getItemEvents GetItemEvent[]
@@ -133,284 +133,284 @@ model Item {
 }
 
 model EquipState {
-  id           String     @id @default(uuid())
-  characterId  String
-  itemId       String
+  id          String @id @default(uuid())
+  characterId String
+  itemId      String
 
-  character    Character  @relation(fields: [characterId], references: [id], onDelete: Cascade)
-  item         Item       @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  item      Item      @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
 
 model MSkillType {
-  id          String    @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   description String?
 
-  skills      Skill[]
+  skills Skill[]
 }
 
 model SkillTag {
-  id          String        @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   description String?
 
-  skills      RSkillTaged[]
+  skills RSkillTagged[]
 }
 
 model AcqRoll {
-  id          String   @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   description String?
 
-  skills      Skill[]
+  skills Skill[]
 }
 
-model RSkillTaged {
-  id         String   @id @default(uuid())
-  skillId    String
-  tagId      String
+model RSkillTagged {
+  id      String @id @default(uuid())
+  skillId String
+  tagId   String
 
-  createAt   DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  skill      Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  tag        SkillTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  skill Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  tag   SkillTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@unique([skillId, tagId])
 }
 
 model MSkillTiming {
-  id          String    @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   description String?
 
-  skills      Skill[]
+  skills Skill[]
 }
 
 model MSkillElement {
-  id          String    @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   description String?
 
-  skills      RSkillHaveElement[]
+  skills RSkillHaveElement[]
 }
 
 model RSkillHaveElement {
-  id           String   @id @default(uuid())
-  skillId      String
-  elementId    String
+  id        String @id @default(uuid())
+  skillId   String
+  elementId String
 
-  createAt     DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  skill        Skill           @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  element      MSkillElement   @relation(fields: [elementId], references: [id], onDelete: Cascade)
+  skill   Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  element MSkillElement @relation(fields: [elementId], references: [id], onDelete: Cascade)
 
   @@unique([skillId, elementId])
 }
 
 model SkillTerget {
-  id          String    @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   description String?
 
-  skills      Skill[]
+  skills Skill[]
 }
 
 model SkillRange {
-  id          String    @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   description String?
 
-  skills      Skill[]
+  skills Skill[]
 }
 
 model SkillShape {
-  id          String    @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   description String?
 
-  skills      Skill[]
+  skills Skill[]
 }
 
 model CharacterParameter {
-  id          String             @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   description String?
 
-  skillCosts  SkillCost[]
+  skillCosts SkillCost[]
 }
 
 model SkillCost {
-  id            String              @id @default(uuid())
-  parameterId   String
-  cost          Int
-  description   String?
+  id          String  @id @default(uuid())
+  parameterId String
+  cost        Int
+  description String?
 
-  skills        RSkillCost[]
-  characters    CharacterParameter  @relation(fields: [parameterId], references: [id], onDelete: Cascade)
+  skills     RSkillCost[]
+  characters CharacterParameter @relation(fields: [parameterId], references: [id], onDelete: Cascade)
 }
 
 model RSkillCost {
-  id                  String    @id @default(uuid())
-  skillId             String
-  skillContinuousId   String?
-  costId              String?
+  id                String  @id @default(uuid())
+  skillId           String
+  skillContinuousId String?
+  costId            String?
 
-  createAt            DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  skill               Skill?    @relation("skill_cost", fields: [skillId], references: [id], onDelete: Cascade)
-  skillContinuous     Skill?    @relation("skill_continuous_cost", fields: [skillContinuousId], references: [id], onDelete: Cascade)
-  cost                SkillCost?@relation(fields: [costId], references: [id], onDelete: Cascade)
+  skill           Skill?     @relation("skill_cost", fields: [skillId], references: [id], onDelete: Cascade)
+  skillContinuous Skill?     @relation("skill_continuous_cost", fields: [skillContinuousId], references: [id], onDelete: Cascade)
+  cost            SkillCost? @relation(fields: [costId], references: [id], onDelete: Cascade)
 
   @@unique([skillId, costId])
 }
 
 model RSkillEvolution {
-  id             String  @id @default(uuid())
+  id             String @id @default(uuid())
   baseSkillId    String
   evolvedSkillId String
 
-  base           Skill   @relation("base", fields: [baseSkillId], references: [id], onDelete: Cascade)
-  evolved        Skill   @relation("evolved", fields: [evolvedSkillId], references: [id], onDelete: Cascade)
+  base    Skill @relation("base", fields: [baseSkillId], references: [id], onDelete: Cascade)
+  evolved Skill @relation("evolved", fields: [evolvedSkillId], references: [id], onDelete: Cascade)
 
   @@unique([baseSkillId, evolvedSkillId])
 }
 
 model Bookmark {
-  id           String    @id @default(uuid())
-  characterId  String
-  skillId      String
+  id          String @id @default(uuid())
+  characterId String
+  skillId     String
 
-  character    Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
-  skill        Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  skill     Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@unique([characterId, skillId])
 }
 
 model Skill {
-  id                 String           @id @default(uuid())
-  name               String
-  typeId             String
-  acqRollId          String?
-  acqRollDifficulty  Int?
-  prerequisiteDesc   String?
-  restrictionDesc    String?
-  timingId           String?
-  magicGrade         Int?
-  targetId           String?
-  rangeId            String?
-  shapeId            String?
-  useRoll            String?
-  effectDesc         String?
+  id                String  @id @default(uuid())
+  name              String
+  typeId            String
+  acqRollId         String?
+  acqRollDifficulty Int?
+  prerequisiteDesc  String?
+  restrictionDesc   String?
+  timingId          String?
+  magicGrade        Int?
+  targetId          String?
+  rangeId           String?
+  shapeId           String?
+  useRoll           String?
+  effectDesc        String?
 
-  createAt           DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  type               MSkillType       @relation(fields: [typeId], references: [id])
-  tags               RSkillTaged[]
-  acqRoll            AcqRoll?         @relation(fields: [acqRollId], references: [id])
-  timing             MSkillTiming?    @relation(fields: [timingId], references: [id])
-  elements           RSkillHaveElement[]
-  target             SkillTerget?     @relation(fields: [targetId], references: [id])
-  range              SkillRange?      @relation(fields: [rangeId], references: [id])
-  shape              SkillShape?      @relation(fields: [shapeId], references: [id])
-  skillCosts         RSkillCost[]     @relation("skill_cost")
-  continuousCosts    RSkillCost[]     @relation("skill_continuous_cost")
-  evolutions         RSkillEvolution[]@relation("base")
-  baseSkill          RSkillEvolution[]@relation("evolved")
-  bookmarks          Bookmark[]
-  skillAcqs          SkillAcqEvent[]
+  type            MSkillType          @relation(fields: [typeId], references: [id])
+  tags            RSkillTagged[]
+  acqRoll         AcqRoll?            @relation(fields: [acqRollId], references: [id])
+  timing          MSkillTiming?       @relation(fields: [timingId], references: [id])
+  elements        RSkillHaveElement[]
+  target          SkillTerget?        @relation(fields: [targetId], references: [id])
+  range           SkillRange?         @relation(fields: [rangeId], references: [id])
+  shape           SkillShape?         @relation(fields: [shapeId], references: [id])
+  skillCosts      RSkillCost[]        @relation("skill_cost")
+  continuousCosts RSkillCost[]        @relation("skill_continuous_cost")
+  evolutions      RSkillEvolution[]   @relation("base")
+  baseSkill       RSkillEvolution[]   @relation("evolved")
+  bookmarks       Bookmark[]
+  skillAcqs       SkillAcqEvent[]
 }
 
 model SkillAcqType {
-  id          String           @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   description String?
 
-  skillAcqs   SkillAcqEvent[]
+  skillAcqs SkillAcqEvent[]
 }
 
 model SkillAcqEvent {
-  id            String        @id @default(uuid())
-  skillId       String
-  acqTypeId     String
-  characterId   String
-  isAcqed       Boolean
+  id          String  @id @default(uuid())
+  skillId     String
+  acqTypeId   String
+  characterId String
+  isAcqed     Boolean
 
-  skill         Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  skillAcqType  SkillAcqType  @relation(fields: [acqTypeId], references: [id])
-  character     Character     @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  skill        Skill        @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  skillAcqType SkillAcqType @relation(fields: [acqTypeId], references: [id])
+  character    Character    @relation(fields: [characterId], references: [id], onDelete: Cascade)
 }
 
 model GrowthEvent {
-  id             String     @id @default(uuid())
-  characterId    String
-  gradeDelta     Int
-  scienceDelta   Int
-  magicDelta     Int
-  battleDelta    Int
-  powerDelta     Int
-  mentalDelta    Int
-  physicalDelta  Int
+  id            String @id @default(uuid())
+  characterId   String
+  gradeDelta    Int
+  scienceDelta  Int
+  magicDelta    Int
+  battleDelta   Int
+  powerDelta    Int
+  mentalDelta   Int
+  physicalDelta Int
 
-  character      Character  @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
 }
 
 model GetItemEvent {
-  id           String   @id @default(uuid())
-  unitId       String
-  itemId       String
-  buyPrice     Int
-  getNum       Int
+  id       String @id @default(uuid())
+  unitId   String
+  itemId   String
+  buyPrice Int
+  getNum   Int
 
-  unit         Unit     @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  item         Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  unit Unit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
 
 model GetMoneyEvent {
-  id        String   @id @default(uuid())
-  unitId    String
-  money     Int
+  id     String @id @default(uuid())
+  unitId String
+  money  Int
 
-  unit      Unit     @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  unit Unit @relation(fields: [unitId], references: [id], onDelete: Cascade)
 }
 
 model GetExpEvent {
-  id            String   @id @default(uuid())
-  characterId   String
-  exp           Int
+  id          String @id @default(uuid())
+  characterId String
+  exp         Int
 
-  character     Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  character Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
 }
 
 model MEventType {
-  id          Int         @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   description String?
 
-  events      EventLog[]
+  events EventLog[]
 }
 
 model MEventLogActionType {
-  id          Int         @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   description String?
 
-  events      EventLog[]
+  events EventLog[]
 }
 
 model EventLog {
-  id             String               @id @default(uuid())
-  eventTypeId    Int
-  eventId        String?
-  actionTypeId   Int
-  actorId        String
-  note           String?
-  createAt       DateTime             @default(now())
+  id           String   @id @default(uuid())
+  eventTypeId  Int
+  eventId      String?
+  actionTypeId Int
+  actorId      String
+  note         String?
+  createdAt    DateTime @default(now())
 
-  eventType      MEventType           @relation(fields: [eventTypeId], references: [id])
-  actionType     MEventLogActionType  @relation(fields: [actionTypeId], references: [id])
-  actor          User                 @relation(fields: [actorId], references: [id])
+  eventType  MEventType          @relation(fields: [eventTypeId], references: [id])
+  actionType MEventLogActionType @relation(fields: [actionTypeId], references: [id])
+  actor      User                @relation(fields: [actorId], references: [id])
 }
