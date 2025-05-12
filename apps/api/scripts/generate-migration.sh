@@ -32,16 +32,18 @@ OLD_SCHEMA="$PRISMA_DIR/old_schema.prisma"
 NEW_SCHEMA="$PRISMA_DIR/schema.prisma"
 
 echo "→ Pulling current D1 schema…"
-npx prisma db pull --print > "$OLD_SCHEMA"
+pnpm prisma db pull --print > "$OLD_SCHEMA"
+sed -i '1,2d' "$OLD_SCHEMA"
 
 echo "→ Generating diff SQL…"
-npx prisma migrate diff \
+pnpm prisma migrate diff \
   --from-schema-datamodel="$OLD_SCHEMA" \
   --to-schema-datamodel="$NEW_SCHEMA" \
   --script \
-  > "$MIG_FILE" 2>/dev/null
+  > "$MIG_FILE"
+sed -i '1,1d' "$MIG_FILE"
 
 echo "→ Cleaning up…"
 rm "$OLD_SCHEMA"
 
-echo "✅ Migration generated at $DIR/migration.sql"
+echo "✅ Migration generated at $MIG_FILE"

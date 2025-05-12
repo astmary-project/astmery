@@ -31,7 +31,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   eventLogs EventLog[]
-  userRoll  UserRoll   @relation(fields: [role], references: [id], onDelete: Cascade)
+  userRoll  UserRoll   @relation(fields: [role], references: [id])
 }
 
 model UnitTag {
@@ -78,12 +78,12 @@ model Unit {
   updatedAt DateTime @updatedAt
 
   unitTags       UnitTagged[]
-  parent         Unit?           @relation("Unit", fields: [parentId], references: [id], onDelete: Cascade)
+  parent         Unit?           @relation("Unit", fields: [parentId], references: [id])
   members        Unit[]          @relation("Unit")
   character      Character?
   getItemEvents  GetItemEvent[]
   getMoneyEvents GetMoneyEvent[]
-  unitType       UnitType        @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  unitType       UnitType        @relation(fields: [typeId], references: [id])
 }
 
 model Character {
@@ -127,7 +127,7 @@ model Item {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  category      MItemCategory  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category      MItemCategory  @relation(fields: [categoryId], references: [id])
   getItemEvents GetItemEvent[]
   equipStates   EquipState[]
 }
@@ -248,21 +248,28 @@ model SkillCost {
   description String?
 
   skills     RSkillCost[]
-  characters CharacterParameter @relation(fields: [parameterId], references: [id], onDelete: Cascade)
+  characterParameter CharacterParameter @relation(fields: [parameterId], references: [id], onDelete: Cascade)
+}
+
+model MSkillCostType {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+
+  skillCosts RSkillCost[]
 }
 
 model RSkillCost {
   id                String  @id @default(uuid())
   skillId           String
-  skillContinuousId String?
-  costId            String?
+  costId            String
+  costTypeId        String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  skill           Skill?     @relation("skill_cost", fields: [skillId], references: [id], onDelete: Cascade)
-  skillContinuous Skill?     @relation("skill_continuous_cost", fields: [skillContinuousId], references: [id], onDelete: Cascade)
   cost            SkillCost? @relation(fields: [costId], references: [id], onDelete: Cascade)
+  costType        MSkillCostType @relation(fields: [costTypeId], references: [id], onDelete: Cascade)
 
   @@unique([skillId, costId])
 }
@@ -322,8 +329,6 @@ model Skill {
   target          SkillTarget?        @relation(fields: [targetId], references: [id])
   range           SkillRange?         @relation(fields: [rangeId], references: [id])
   shape           SkillShape?         @relation(fields: [shapeId], references: [id])
-  skillCosts      RSkillCost[]        @relation("skill_cost")
-  continuousCosts RSkillCost[]        @relation("skill_continuous_cost")
   evolutions      RSkillEvolution[]   @relation("base")
   baseSkill       RSkillEvolution[]   @relation("evolved")
   bookmarks       Bookmark[]
